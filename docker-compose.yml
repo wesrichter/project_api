@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  project_api:
+    container_name: project_api
+    image: project_api
+    build: .
+    ports:
+      - "80:80"
+    environment:
+      - FLASK_APP=src/app.py
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
+    depends_on:
+      - db
+
+  db:
+    container_name: db
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata: {}
